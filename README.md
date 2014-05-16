@@ -34,7 +34,11 @@ Just like the `save` and `save-frame` functions, you can simply put a `save-anim
   :size [500 500])
 </pre>
 
-The arguments for `save-animation` 
+The arguments for `save-animation` are:
+
+* the name of the file
+* the number of frames to be captured
+* the delay (in centiseconds) between frames
 
 ## License
 
