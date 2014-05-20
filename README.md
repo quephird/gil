@@ -6,6 +6,17 @@ For now, just a way of saving a quil sketch to an animated .gif file, and in a w
 
 Just like the `save` and `save-frame` functions, you can simply put a `save-animation` invocation in the draw method of a quil sketch at the place you would like to capture the current state of each frame. Below is an example sketch:
 
+First make sure to include `gil` in your project.clj:
+
+<pre>
+(defproject your-project "1.2.3"
+  :dependencies [[org.clojure/clojure "1.6.0"]
+                 [quil "1.7.0"]
+                 [gil "1.0.0-SNAPSHOT"]])
+</pre>
+
+... then just `:use` gil in your code:
+
 <pre>
 (ns example
   (:use quil.core)
