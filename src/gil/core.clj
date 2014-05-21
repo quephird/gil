@@ -98,10 +98,6 @@
     (reset! writer gif-writer)
     ))
 
-; TODO: Get rid of this
-(defn init-globals [filename loop-count delay-time]
-  (init-writer filename "gif" loop-count delay-time))
-
 (defn clean-up []
   (reset! metadata nil)
   (reset! param nil)
