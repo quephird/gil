@@ -1,6 +1,7 @@
 (ns gil.core
   (:use [quil.core]
-        [quil.applet :only [current-applet]])
+        [quil.applet :only [current-applet]]
+        [clojure.string :as cs :only [lower-case split]])
   (:import [java.io File FileWriter]
            [javax.imageio IIOImage ImageIO ImageTypeSpecifier]
            [javax.imageio.metadata IIOMetadataNode]))
@@ -10,6 +11,15 @@
 (def writer (atom nil))
 (def metadata (atom nil))
 (def param (atom nil))
+
+(defn- extract-format [filename]
+  (let [format-name (-> filename
+                        (cs/split #"\.")
+                        (second)
+                        (cs/lower-case))]
+    (if (not= "gif" format-name)
+      (throw (Exception. "Only .gif files are supported at this time."))
+      format-name)))
 
 ; TODO: COMMENTS!!!!!
 ;       make everything except save-animation private
@@ -60,12 +70,11 @@
 (defn write-to-sequence! [writer image metadata param]
   (.writeToSequence writer (IIOImage. image nil metadata) param))
 
-; TODO: Extract format name from file extension
-;       Possibly dispatch on value or extension to support multiple formats
-;       Throw exception for unsupported formats
+; TODO: Possibly dispatch on value or extension to support multiple formats
 ;       Create helper functions for everything involving Java interop
-(defn init-writer [filename format-name loop-count delay-time]
-  (let [outputstream (ImageIO/createImageOutputStream (File. filename))
+(defn init-writer [filename loop-count delay-time]
+  (let [format-name (extract-format filename)
+        outputstream (ImageIO/createImageOutputStream (File. filename))
         current-image (get-buffered-image (get-pixel))
         image-type (.getType current-image)
         specifier (ImageTypeSpecifier/createFromBufferedImageType image-type)
@@ -91,7 +100,7 @@
 
 ; TODO: Get rid of this
 (defn init-globals [filename loop-count delay-time]
-  (init-writer filename "GIF" loop-count delay-time))
+  (init-writer filename "gif" loop-count delay-time))
 
 (defn clean-up []
   (reset! metadata nil)
@@ -101,7 +110,7 @@
 ; TODO: capture frame-count once into local variable
 (defn save-animation [filename loop-count delay-time]
   (if (= 1 (frame-count))
-    (init-globals filename loop-count delay-time))
+    (init-writer filename loop-count delay-time))
 
   (if (<= (frame-count) loop-count)
     (let [current-image (get-buffered-image (get-pixel))]

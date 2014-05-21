@@ -4,7 +4,7 @@ For now, just a way of saving a quil sketch to an animated .gif file, and in a w
 
 ## Usage
 
-Just like the `save` and `save-frame` functions, you can simply put a `save-animation` invocation in the draw method of a quil sketch at the place you would like to capture the current state of each frame. Below is an example sketch:
+Just like the `save` and `save-frame` functions, you can simply put a `save-animation` invocation in the draw method of a quil sketch at the place you would like to capture the current state of each frame. 
 
 First make sure to include `gil` in your project.clj:
 
