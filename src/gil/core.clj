@@ -101,7 +101,9 @@
 (defn clean-up []
   (reset! metadata nil)
   (reset! param nil)
-  (.dispose @writer))
+  (.endWriteSequence @writer)
+  (.dispose @writer)
+  (reset! writer nil))
 
 ; TODO: capture frame-count once into local variable
 (defn save-animation [filename loop-count delay-time]
